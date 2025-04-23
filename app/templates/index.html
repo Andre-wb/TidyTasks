@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Органайзер задач</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<script src="{{ url_for('static', filename='js/ThemeToggle.js') }}"></script>
+<body>
+<header>
+    <nav>
+        <section class="header-logo">
+            <h1>Tidy Tasks</h1>
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" style="fill: rgba(117, 178, 119, 1);transform: ;msFilter:;"><path d="M5 22h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2h-2a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1H5c-1.103 0-2 .897-2 2v15c0 1.103.897 2 2 2zM5 5h2v2h10V5h2v15H5V5z"></path><path d="m11 13.586-1.793-1.793-1.414 1.414L11 16.414l5.207-5.207-1.414-1.414z"></path></svg>
+        </section>
+        <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider"></span>
+        </label>
+    </nav>
+</header>
+<main>
+    <h1 class="task-title">Список задач</h1>
+
+    <form method="POST" class="">
+        {{ form.hidden_tag() }}
+        <div class="task-form">
+            {{ form.title(class="form name", placeholder="Название") }}
+            {{ form.description(class="form description", placeholder="Описание (необязательно)") }}
+            {{ form.due_date(class="form due-date") }}
+            {{ form.submit(class="form submit") }}
+        </div>
+    </form>
+
+    <ul class="">
+        {% for task in tasks %}
+            <li class="task">
+                <div class="task-about">
+                    <p><strong>{{ task.title }}</strong><br></p>
+                    <p>{{ task.description or "Без описания" }}<br></p>
+                    <p>({{ task.due_date }})</p>
+                    {% if task.completed %}
+                        <span class="done">Выполнено</span>
+                    {% endif %}
+                </div>
+                <div>
+                    {% if not task.completed %}
+                        <a href="{{ url_for('main.complete', task_id=task.id) }}" class="action">Завершить</a>
+                    {% endif %}
+                        <a href="{{ url_for('main.delete', task_id=task.id) }}" class="action">Удалить</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</main>
+</body>
+</html>
