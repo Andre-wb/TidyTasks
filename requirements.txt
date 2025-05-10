@@ -1,4 +1,4 @@
 WTForms~=3.2.1
 DateTime~=5.5
 Flask~=2.3.2
-dotenv==1.1.0
+dotenv==0.9.9
